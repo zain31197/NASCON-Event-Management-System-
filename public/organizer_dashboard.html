@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="organizerdashboard.css">
+  <title>Organizer Dashboard</title>
+</head>
+<body class="dashboard-body">
+  <!-- Header Section -->
+  <header class="dashboard-header">
+    <div class="header-logo-container">
+      <img src="logo.png" alt="Company Logo" class="header-logo">
+      <h1 class="header-title">Event Organizer</h1>
+    </div>
+    <nav class="header-nav">
+      <a href="dashboard.html" class="header-nav-link">Dashboard</a>
+      <a href="profile.html" class="header-nav-link">Profile</a>
+      <a href="settings.html" class="header-nav-link">Settings</a>
+      <a href="logout.html" class="header-nav-link">Logout</a>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="dashboard-main">
+    <h1 class="dashboard-title">Organizer Dashboard</h1>
+    <div class="dashboard-button-container">
+      <button class="dashboard-btn" onclick="location.href='manage_events.html'">
+        <i class="fas fa-calendar-alt"></i>
+        Manage Events
+      </button>
+      <button class="dashboard-btn" onclick="location.href='manage_venues.html'">
+        <i class="fas fa-map-marker-alt"></i>
+        Manage Venues
+      </button>
+      <button class="dashboard-btn" onclick="location.href='view_registrations.html'">
+        <i class="fas fa-users"></i>
+        View Registrations
+      </button>
+    </div>
+  </main>
+
+  <!-- Footer Section -->
+  <footer class="dashboard-footer">
+    <div class="footer-content">
+      <div class="footer-logo-container">
+        <img src="logo.png" alt="Company Logo" class="footer-logo">
+        <span class="footer-company-name">Event Organizer</span>
+      </div>
+      <div class="footer-links">
+        <a href="about.html" class="footer-link">About Us</a>
+        <a href="contact.html" class="footer-link">Contact</a>
+        <a href="privacy.html" class="footer-link">Privacy Policy</a>
+        <a href="terms.html" class="footer-link">Terms of Service</a>
+      </div>
+      <div class="footer-copyright">
+        &copy; 2025 Event Organizer. All rights reserved.
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

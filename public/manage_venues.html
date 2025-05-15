@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Venues</title>
+  <link rel="stylesheet" href="manage_venues.css"> 
+</head>
+
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="logo.png" alt="Logo">
+            <h1>Venue Management System</h1>
+        </div>
+        <a href="index.html" class="back-link">← Back to Dashboard</a>
+    </header>
+    
+    <div class="container">
+      <h1>Manage Venues</h1>
+
+      <form id="venueForm">
+        <input type="text" id="name" placeholder="Venue Name" required>
+        <input type="text" id="location" placeholder="Location" required>
+        <input type="number" id="capacity" placeholder="Capacity" required>
+        <button type="submit">Add Venue</button>
+      </form>
+
+      <h2>Existing Venues</h2>
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Venue ID</th>
+            <th>Name</th>
+            <th>Location</th>
+            <th>Capacity</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="venuesTable"></tbody>
+      </table>
+    </div>
+
+    <footer>
+      <p>© 2023 Venue Management System. All rights reserved.</p>
+    </footer>
+
+  <script>
+    const venueForm = document.getElementById('venueForm');
+    const venuesTable = document.getElementById('venuesTable');
+
+    async function fetchVenues() {
+      const res = await fetch('/api/venues');
+      const venues = await res.json();
+      venuesTable.innerHTML = '';
+      venues.forEach(venue => {
+        venuesTable.innerHTML += `
+          <tr>
+            <td>${venue.VenueID}</td>
+            <td>${venue.Name}</td>
+            <td>${venue.Location}</td>
+            <td>${venue.Capacity}</td>
+            <td>
+              <button onclick="deleteVenue(${venue.VenueID})">Delete</button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    venueForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const venue = {
+        name: document.getElementById('name').value,
+        location: document.getElementById('location').value,
+        capacity: document.getElementById('capacity').value
+      };
+      await fetch('/api/venues', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(venue)
+      });
+      venueForm.reset();
+      fetchVenues();
+    });
+
+    async function deleteVenue(id) {
+      await fetch(`/api/venues/${id}`, { method: 'DELETE' });
+      fetchVenues();
+    }
+
+    fetchVenues();
+  </script>
+</body>
+</html>

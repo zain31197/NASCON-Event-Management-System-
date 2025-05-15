@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Events</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --royal-blue: #1a3a8f;
+            --royal-blue-light: #2750b3;
+            --royal-blue-dark: #12296a;
+            --accent-color: #4f7dfa;
+            --text-color: #ffffff;
+            --text-secondary: #d0d9ff;
+            --background-dark: #0a1631;
+            --background-light: #1a2747;
+            --border-color: #2c4380;
+            --hover-color: #3563d1;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .view-events-body {
+            font-family: 'Poppins', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--background-dark) 0%, var(--background-light) 100%);
+            color: var(--text-color);
+            padding: 2rem;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            width: 160px;
+            height: auto;
+            margin-right: 2rem;
+        }
+
+        .page-title-container {
+            flex-grow: 1;
+        }
+
+        .view-events-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .page-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .events-container {
+            background-color: var(--royal-blue-dark);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            margin-top: 2rem;
+        }
+
+        .events-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: transparent;
+        }
+
+        .events-table thead {
+            background-color: var(--royal-blue);
+        }
+
+        .event-header {
+            padding: 1rem 1.2rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .events-list tr {
+            transition: background-color 0.2s ease;
+        }
+
+        .events-list tr:hover {
+            background-color: var(--royal-blue-light);
+        }
+
+        .event-cell {
+            padding: 1rem 1.2rem;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.95rem;
+        }
+
+        /* Category badges */
+        .category-badge {
+            display: inline-block;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.6;
+        }
+
+        .empty-state-text {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state-subtext {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* Loading animation */
+        @keyframes pulse {
+            0% {
+                opacity: 0.6;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0.6;
+            }
+        }
+
+        .loading {
+            animation: pulse 1.5s infinite;
+            text-align: center;
+            padding: 2rem;
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+
+        /* Responsive styling */
+        @media (max-width: 992px) {
+            .events-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .view-events-body {
+                padding: 1rem;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .logo {
+                margin-bottom: 1rem;
+                margin-right: 0;
+            }
+
+            .view-events-title {
+                font-size: 1.8rem;
+            }
+
+            .event-header, .event-cell {
+                padding: 0.8rem;
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--background-dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--royal-blue);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--hover-color);
+        }
+
+        /* Date and time styling */
+        .date-time {
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body class="view-events-body">
+    <div class="header">
+        <img src="logo.png" alt="Logo" class="logo">
+        <div class="page-title-container">
+            <h1 class="view-events-title">Available Events</h1>
+            <p class="page-subtitle">Discover and participate in upcoming events</p>
+        </div>
+    </div>
+
+    <div class="events-container">
+        <table class="events-table">
+            <thead>
+                <tr>
+                    <th class="event-header">Name</th>
+                    <th class="event-header">Category</th>
+                    <th class="event-header">Date</th>
+                    <th class="event-header">Time</th>
+                    <th class="event-header">Description</th>
+                </tr>
+            </thead>
+            <tbody id="events-list" class="events-list">
+                <!-- Loading placeholder -->
+                <tr>
+                    <td colspan="5" class="loading">Loading events...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function formatDate(dateString) {
+            try {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'short', 
+                    day: 'numeric'
+                });
+            } catch (e) {
+                return dateString;
+            }
+        }
+
+        function formatTime(timeString) {
+            // If it's already in a time format, return as is
+            if (timeString.includes(':')) {
+                return timeString;
+            }
+            
+            // Try to parse as date-time
+            try {
+                const date = new Date(timeString);
+                return date.toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            } catch (e) {
+                return timeString;
+            }
+        }
+
+        function getCategoryClass(category) {
+            // Map categories to specific classes if needed in the future
+            const categoryMap = {
+                'Sports': 'sports',
+                'Music': 'music',
+                'Technology': 'tech',
+                'Art': 'art',
+                'Education': 'education'
+                // Add more categories as needed
+            };
+            
+            return categoryMap[category] || 'default';
+        }
+
+        fetch('/participant/events')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(events => {
+                const tableBody = document.getElementById('events-list');
+                tableBody.innerHTML = '';
+                
+                if (events.length === 0) {
+                    tableBody.innerHTML = `
+                        <tr>
+                            <td colspan="5" class="empty-state">
+                                <div class="empty-state-icon">📅</div>
+                                <div class="empty-state-text">No events available at the moment</div>
+                                <div class="empty-state-subtext">Check back later for upcoming events</div>
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                events.forEach(event => {
+                    const row = document.createElement('tr');
+                    const categoryClass = getCategoryClass(event.Category);
+                    
+                    row.innerHTML = `
+                        <td class="event-cell">${event.Name}</td>
+                        <td class="event-cell"><span class="category-badge ${categoryClass}">${event.Category}</span></td>
+                        <td class="event-cell date-time">${formatDate(event.Date)}</td>
+                        <td class="event-cell date-time">${formatTime(event.Time)}</td>
+                        <td class="event-cell">${event.Description}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching events:', error);
+                const tableBody = document.getElementById('events-list');
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="5" style="text-align: center; color: #ff6b6b; padding: 2rem;">
+                            Error loading events. Please try again later.
+                        </td>
+                    </tr>
+                `;
+            });
+    </script>
+</body>
+</html>

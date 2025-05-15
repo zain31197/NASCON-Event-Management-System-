@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sponsorship Dashboard</title>
+  <style>
+    body {
+      background-color: #0a1f44;
+      color: #e6f0ff;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      padding: 30px;
+      margin: 0;
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+      border-bottom: 2px solid #275abd;
+      padding-bottom: 15px;
+    }
+    
+    .logo {
+      max-height: 70px;
+      margin-right: 20px;
+    }
+    
+    h2 {
+      color: #4f8eff;
+      margin: 0;
+      font-size: 28px;
+      font-weight: 600;
+    }
+    
+    h3 {
+      color: #65a8ff;
+      margin-top: 30px;
+      margin-bottom: 15px;
+      font-size: 20px;
+      padding-left: 10px;
+      border-left: 4px solid #1e4db7;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+    }
+    
+    th {
+      background-color: #1e4db7;
+      color: white;
+      font-weight: 500;
+      text-transform: uppercase;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+    }
+    
+    tr:nth-child(even) {
+      background-color: rgba(41, 84, 163, 0.2);
+    }
+    
+    tr:hover {
+      background-color: rgba(41, 84, 163, 0.4);
+    }
+    
+    td {
+      border-bottom: 1px solid #2954a3;
+    }
+    
+    #packagesList {
+      list-style-type: none;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    
+    #packagesList li {
+      background: linear-gradient(145deg, #1a3a7a, #0d2b6e);
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+      min-width: 200px;
+      text-align: center;
+      border: 1px solid #2954a3;
+      font-weight: 500;
+    }
+    
+    #sponsorshipForm {
+      background: linear-gradient(145deg, #1a3a7a, #0d2b6e);
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-bottom: 30px;
+      border: 1px solid #2954a3;
+    }
+    
+    input, select, button {
+      padding: 12px 15px;
+      border-radius: 6px;
+      font-size: 14px;
+      border: 1px solid #3d68c5;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      transition: all 0.3s ease;
+    }
+    
+    input::placeholder {
+      color: #a3b8e0;
+    }
+    
+    input:focus, select:focus {
+      outline: none;
+      border-color: #4d78df;
+      box-shadow: 0 0 0 2px rgba(77, 120, 223, 0.3);
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+    
+    button {
+      background-color: #1e4db7;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: background 0.3s ease;
+      grid-column: 1 / -1;
+    }
+    
+    button:hover {
+      background-color: #2a5fda;
+    }
+    
+    #totalFunds {
+      background: linear-gradient(145deg, #1a3a7a, #0d2b6e);
+      padding: 20px;
+      border-radius: 8px;
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      color: #4f8eff;
+      border: 1px solid #2954a3;
+    }
+    
+    @media (max-width: 768px) {
+      #sponsorshipForm {
+        grid-template-columns: 1fr;
+      }
+      
+      .header {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .logo {
+        margin-right: 0;
+        margin-bottom: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="logo.png" alt="Logo" class="logo">
+      <h2>Sponsorship Dashboard</h2>
+    </div>
+    
+    <h3>Available Sponsorship Packages</h3>
+    <ul id="packagesList"></ul>
+    
+    <h3>Register Sponsorship</h3>
+    <form id="sponsorshipForm">
+      <input type="number" id="eventId" placeholder="Event ID" required />
+      <input type="number" id="sponsorId" placeholder="Sponsor ID" required />
+      <select id="sponsorshipType">
+        <option value="Title Sponsor">Title Sponsor</option>
+        <option value="Gold Sponsor">Gold Sponsor</option>
+        <option value="Silver Sponsor">Silver Sponsor</option>
+        <option value="Media Partner">Media Partner</option>
+      </select>
+      <input type="number" id="amount" placeholder="Amount" required />
+      <button type="submit">Add Sponsorship</button>
+    </form>
+    
+    <h3>All Sponsorships</h3>
+    <table id="sponsorshipTable">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Company</th>
+          <th>Event</th>
+          <th>Type</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    
+    <h3>Total Funds Collected</h3>
+    <div id="totalFunds">Loading...</div>
+  </div>
+  
+  <script>
+    async function loadPackages() {
+      const res = await fetch('/api/sponsorship/packages');
+      const packages = await res.json();
+      const list = document.getElementById('packagesList');
+      packages.forEach(p => {
+        const li = document.createElement('li');
+        li.textContent = `${p.type} - $${p.amount}`;
+        list.appendChild(li);
+      });
+    }
+    
+    async function loadSponsorships() {
+      const res = await fetch('/api/sponsorship/sponsorships');
+      const data = await res.json();
+      const tbody = document.querySelector('#sponsorshipTable tbody');
+      tbody.innerHTML = '';
+      data.forEach(row => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${row.SponsorshipID}</td>
+          <td>${row.CompanyName}</td>
+          <td>${row.EventName}</td>
+          <td>${row.SponsorshipType}</td>
+          <td>$${row.Amount}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+    
+    async function loadTotalFunds() {
+      const res = await fetch('/api/sponsorship/sponsorships/total-funds');
+      const data = await res.json();
+      document.getElementById('totalFunds').textContent = `$${data.TotalFunds}`;
+    }
+    
+    document.getElementById('sponsorshipForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const body = {
+        eventId: document.getElementById('eventId').value,
+        sponsorId: document.getElementById('sponsorId').value,
+        amount: document.getElementById('amount').value,
+        sponsorshipType: document.getElementById('sponsorshipType').value
+      };
+      const res = await fetch('/api/sponsorship/sponsorships', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      if (res.ok) {
+        alert('Sponsorship added!');
+        loadSponsorships();
+        loadTotalFunds();
+      } else {
+        alert('Error adding sponsorship.');
+      }
+    });
+    
+    loadPackages();
+    loadSponsorships();
+    loadTotalFunds();
+  </script>
+</body>
+</html>

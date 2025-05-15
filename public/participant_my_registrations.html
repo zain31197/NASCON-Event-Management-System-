@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Registrations</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --royal-blue: #1a3a8f;
+            --royal-blue-light: #2750b3;
+            --royal-blue-dark: #12296a;
+            --accent-color: #4f7dfa;
+            --text-color: #ffffff;
+            --text-secondary: #d0d9ff;
+            --background-dark: #0a1631;
+            --background-light: #1a2747;
+            --border-color: #2c4380;
+            --hover-color: #3563d1;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --input-bg: #0e1d42;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .my-registrations-body {
+            font-family: 'Poppins', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--background-dark) 0%, var(--background-light) 100%);
+            color: var(--text-color);
+            padding: 2rem;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            width: 160px;
+            height: auto;
+            margin-right: 2rem;
+        }
+
+        .page-title-container {
+            flex-grow: 1;
+        }
+
+        .my-registrations-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .page-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .fetch-form {
+            background-color: var(--royal-blue-dark);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px var(--shadow-color);
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            flex-basis: 100%;
+        }
+
+        .form-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            font-family: 'Poppins', sans-serif;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(79, 125, 250, 0.2);
+        }
+
+        .fetch-button {
+            padding: 0.8rem 1.5rem;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .fetch-button:hover {
+            background-color: #3d6ae0;
+            transform: translateY(-2px);
+        }
+
+        .fetch-button:active {
+            transform: translateY(1px);
+        }
+
+        .registrations-container {
+            background-color: var(--royal-blue-dark);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .registrations-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: transparent;
+        }
+
+        .registrations-table thead {
+            background-color: var(--royal-blue);
+        }
+
+        .registration-header {
+            padding: 1rem 1.2rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .registrations-list tr {
+            transition: background-color 0.2s ease;
+        }
+
+        .registrations-list tr:hover {
+            background-color: var(--royal-blue-light);
+        }
+
+        .registration-cell {
+            padding: 1rem 1.2rem;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.95rem;
+        }
+
+        /* Category badges */
+        .category-badge {
+            display: inline-block;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.6;
+        }
+
+        .empty-state-text {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state-subtext {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* Loading animation */
+        @keyframes pulse {
+            0% {
+                opacity: 0.6;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0.6;
+            }
+        }
+
+        .loading {
+            animation: pulse 1.5s infinite;
+            text-align: center;
+            padding: 2rem;
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+
+        /* Responsive styling */
+        @media (max-width: 992px) {
+            .registrations-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .my-registrations-body {
+                padding: 1rem;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .logo {
+                margin-bottom: 1rem;
+                margin-right: 0;
+            }
+
+            .my-registrations-title {
+                font-size: 1.8rem;
+            }
+
+            .fetch-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .form-input {
+                width: 100%;
+            }
+
+            .fetch-button {
+                width: 100%;
+                margin-top: 0.5rem;
+            }
+
+            .registration-header, .registration-cell {
+                padding: 0.8rem;
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--background-dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--royal-blue);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--hover-color);
+        }
+
+        /* Date and time styling */
+        .date-time {
+            white-space: nowrap;
+        }
+
+        /* Feedback message styling */
+        .feedback-message {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+            display: none;
+        }
+
+        .success-message {
+            background-color: rgba(76, 175, 80, 0.1);
+            border: 1px solid #4caf50;
+            color: #4caf50;
+        }
+
+        .error-message {
+            background-color: rgba(244, 67, 54, 0.1);
+            border: 1px solid #f44336;
+            color: #f44336;
+        }
+    </style>
+</head>
+<body class="my-registrations-body">
+    <div class="header">
+        <img src="logo.png" alt="Logo" class="logo">
+        <div class="page-title-container">
+            <h1 class="my-registrations-title">My Event Registrations</h1>
+            <p class="page-subtitle">View all events you've registered for</p>
+        </div>
+    </div>
+
+    <div id="feedbackArea" class="feedback-message"></div>
+
+    <form id="fetchForm" class="fetch-form">
+        <label class="form-label">Enter Your User ID:</label>
+        <input type="text" id="userID" class="form-input" placeholder="Enter your user ID">
+        <button type="submit" class="fetch-button">Fetch My Registrations</button>
+    </form>
+
+    <div class="registrations-container">
+        <table class="registrations-table">
+            <thead>
+                <tr>
+                    <th class="registration-header">Event Name</th>
+                    <th class="registration-header">Category</th>
+                    <th class="registration-header">Date</th>
+                    <th class="registration-header">Time</th>
+                </tr>
+            </thead>
+            <tbody id="registrations-list" class="registrations-list">
+                <tr>
+                    <td colspan="4" class="empty-state">
+                        <div class="empty-state-icon">🎟️</div>
+                        <div class="empty-state-text">No registrations to display</div>
+                        <div class="empty-state-subtext">Enter your User ID to view your registrations</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function formatDate(dateString) {
+            try {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'short', 
+                    day: 'numeric'
+                });
+            } catch (e) {
+                return dateString;
+            }
+        }
+
+        function formatTime(timeString) {
+            // If it's already in a time format, return as is
+            if (timeString.includes(':')) {
+                return timeString;
+            }
+            
+            // Try to parse as date-time
+            try {
+                const date = new Date(timeString);
+                return date.toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            } catch (e) {
+                return timeString;
+            }
+        }
+
+        function getCategoryClass(category) {
+            // Map categories to specific classes if needed in the future
+            const categoryMap = {
+                'Sports': 'sports',
+                'Music': 'music',
+                'Technology': 'tech',
+                'Art': 'art',
+                'Education': 'education'
+                // Add more categories as needed
+            };
+            
+            return categoryMap[category] || 'default';
+        }
+
+        function showFeedback(message, isError = false) {
+            const feedbackArea = document.getElementById('feedbackArea');
+            feedbackArea.textContent = message;
+            feedbackArea.style.display = 'block';
+            
+            if (isError) {
+                feedbackArea.className = 'feedback-message error-message';
+            } else {
+                feedbackArea.className = 'feedback-message success-message';
+            }
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                feedbackArea.style.display = 'none';
+            }, 5000);
+        }
+
+        document.getElementById('fetchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const userID = document.getElementById('userID').value.trim();
+            
+            if (!userID) {
+                showFeedback('Please enter your User ID', true);
+                return;
+            }
+            
+            // Show loading state
+            const tableBody = document.getElementById('registrations-list');
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="4" class="loading">Loading your registrations...</td>
+                </tr>
+            `;
+            
+            fetch(`/participant/my-registrations/${userID}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch registrations');
+                    }
+                    return response.json();
+                })
+                .then(registrations => {
+                    tableBody.innerHTML = '';
+                    
+                    if (registrations.length === 0) {
+                        tableBody.innerHTML = `
+                            <tr>
+                                <td colspan="4" class="empty-state">
+                                    <div class="empty-state-icon">📋</div>
+                                    <div class="empty-state-text">No registrations found</div>
+                                    <div class="empty-state-subtext">You haven't registered for any events yet</div>
+                                </td>
+                            </tr>
+                        `;
+                        return;
+                    }
+                    
+                    registrations.forEach(reg => {
+                        const row = document.createElement('tr');
+                        const categoryClass = getCategoryClass(reg.Category);
+                        
+                        row.innerHTML = `
+                            <td class="registration-cell">${reg.Name}</td>
+                            <td class="registration-cell"><span class="category-badge ${categoryClass}">${reg.Category}</span></td>
+                            <td class="registration-cell date-time">${formatDate(reg.Date)}</td>
+                            <td class="registration-cell date-time">${formatTime(reg.Time)}</td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                    
+                    showFeedback(`Successfully loaded ${registrations.length} registration(s)`);
+                })
+                .catch(error => {
+                    console.error('Error fetching registrations:', error);
+                    tableBody.innerHTML = `
+                        <tr>
+                            <td colspan="4" style="text-align: center; color: #ff6b6b; padding: 2rem;">
+                                Error loading registrations. Please try again later.
+                            </td>
+                        </tr>
+                    `;
+                    showFeedback('Failed to load registrations. Please try again.', true);
+                });
+        });
+    </script>
+</body>
+</html>

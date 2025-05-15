@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Events - Event Management System</title>
+    <link rel="stylesheet" href="manage_events.css">
+</head>
+<body>
+
+<header>
+    <div class="logo-container">
+        <img src="logo.png" alt="Logo">
+        <h1>Event Management System</h1>
+    </div>
+    <a href="index.html" class="back-link">← Back to Dashboard</a>
+</header>
+
+<div class="container">
+    <h1>Manage Events</h1>
+    
+    <div class="table-container">
+        <table id="eventsTable">
+            <thead>
+                <tr>
+                    <th>EventID</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>Rules</th>
+                    <th>Max Participants</th>
+                    <th>Registration Fee</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>VenueID</th>
+                    <th>OrganizerID</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    
+    <h2>Add New Event</h2>
+    <div class="form-container">
+        <form id="addEventForm">
+            <div class="form-group">
+                <input type="text" id="name" placeholder="Event Name" required>
+                <input type="text" id="category" placeholder="Category" required>
+                <input type="text" id="description" placeholder="Description" required>
+                <input type="text" id="rules" placeholder="Rules" required>
+                <input type="number" id="maxParticipants" placeholder="Max Participants" required>
+                <input type="number" id="registrationFee" placeholder="Registration Fee" required>
+                <input type="date" id="date" placeholder="Date" required>
+                <input type="time" id="time" placeholder="Time" required>
+                <input type="number" id="venueID" placeholder="Venue ID" required>
+                <input type="number" id="organizerID" placeholder="Organizer ID" required>
+            </div>
+            <button type="submit">Add Event</button>
+        </form>
+    </div>
+</div>
+
+<footer>
+    &copy; 2025 Event Management System. All rights reserved.
+</footer>
+
+<script>
+function fetchEvents() {
+    fetch('/api/events')
+        .then(res => res.json())
+        .then(data => {
+            const tbody = document.querySelector('#eventsTable tbody');
+            tbody.innerHTML = '';
+            data.forEach(event => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${event.EventID}</td>
+                        <td>${event.Name}</td>
+                        <td>${event.Category}</td>
+                        <td>${event.Description}</td>
+                        <td>${event.Rules}</td>
+                        <td>${event.MaxParticipants}</td>
+                        <td>${event.RegistrationFee}</td>
+                        <td>${event.Date}</td>
+                        <td>${event.Time}</td>
+                        <td>${event.VenueID}</td>
+                        <td>${event.OrganizerID}</td>
+                        <td>
+                            <button class="delete-btn" onclick="deleteEvent(${event.EventID})">Delete</button>
+                            <button class="edit-btn" onclick="editEvent(${event.EventID})">Edit</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        });
+}
+
+function deleteEvent(id) {
+    if (confirm('Are you sure you want to delete this event?')) {
+        fetch(`/api/events/${id}`, { method: 'DELETE' })
+            .then(() => fetchEvents());
+    }
+}
+
+function editEvent(id) {
+    // Logic for editing event (e.g., populate the form with event data)
+}
+
+document.getElementById('addEventForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const event = {
+        name: document.getElementById('name').value,
+        category: document.getElementById('category').value,
+        description: document.getElementById('description').value,
+        rules: document.getElementById('rules').value,
+        maxParticipants: document.getElementById('maxParticipants').value,
+        registrationFee: document.getElementById('registrationFee').value,
+        date: document.getElementById('date').value,
+        time: document.getElementById('time').value,
+        venueID: document.getElementById('venueID').value,
+        organizerID: document.getElementById('organizerID').value
+    };
+
+    fetch('/api/events', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(event)
+    }).then(() => {
+        fetchEvents();
+        this.reset();
+    });
+});
+
+fetchEvents();
+</script>
+
+</body>
+</html>

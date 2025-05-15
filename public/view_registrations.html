@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Registrations</title>
+  <link rel="stylesheet" href="view_registeration.css">
+</head>
+<body>
+  <div class="header">
+    <img src="logo.png" alt="Company Logo" class="logo">
+    <h1>View Registrations</h1>
+  </div>
+
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Registration ID</th>
+        <th>Participant Name</th>
+        <th>Event Name</th>
+        <th>Registration Date</th>
+      </tr>
+    </thead>
+    <tbody id="registrationsTable">
+      <!-- Data will be populated here -->
+    </tbody>
+  </table>
+  
+  <div id="loadingIndicator" class="loading">Loading registrations...</div>
+  <div id="noRecords" class="no-records" style="display: none;">No registrations found</div>
+
+  <script>
+    const registrationsTable = document.getElementById('registrationsTable');
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    const noRecords = document.getElementById('noRecords');
+    
+    async function fetchRegistrations() {
+      try {
+        loadingIndicator.style.display = 'block';
+        noRecords.style.display = 'none';
+        
+        const res = await fetch('/api/registrations');
+        const registrations = await res.json();
+        
+        loadingIndicator.style.display = 'none';
+        registrationsTable.innerHTML = '';
+        
+        if (registrations.length === 0) {
+          noRecords.style.display = 'block';
+          return;
+        }
+        
+        registrations.forEach(reg => {
+          registrationsTable.innerHTML += `
+            <tr>
+              <td>${reg.RegistrationID}</td>
+              <td>${reg.ParticipantName}</td>
+              <td>${reg.EventName}</td>
+              <td>${new Date(reg.RegistrationDate).toLocaleDateString()}</td>
+            </tr>
+          `;
+        });
+      } catch (error) {
+        loadingIndicator.style.display = 'none';
+        console.error('Error fetching registrations:', error);
+        registrationsTable.innerHTML = `<tr><td colspan="4">Error loading data. Please try again.</td></tr>`;
+      }
+    }
+    
+    fetchRegistrations();
+  </script>
+</body>
+</html>

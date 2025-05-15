@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Nascon 2025</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="register.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="logo-container">
+            <img src="logo.png" alt="Nascon Logo" class="logo">
+            <h1 class="site-title">Nascon 2025</h1>
+        </div>
+        <nav class="header-nav">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="about.html" class="nav-link">About</a>
+            <a href="login.html" class="nav-link">Login</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="register-container">
+        <div class="register-card">
+            <!-- Decorative elements -->
+            <div class="bg-circle bg-circle-1"></div>
+            <div class="bg-circle bg-circle-2"></div>
+            
+            <h1 class="register-title">Register User</h1>
+            
+            <form id="register-form">
+                <div class="form-row">
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" id="name" name="name" class="form-input" required>
+                        </div>
+                    </div>
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" id="email" name="email" class="form-input" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label for="phone" class="form-label">Phone</label>
+                            <input type="text" id="phone" name="phone" class="form-input">
+                        </div>
+                    </div>
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label for="role" class="form-label">Role</label>
+                            <select id="role" name="role" class="form-select" required>
+                                <option value="">Select your role</option>
+                                <option value="Admin">Admin</option>
+                                <option value="Organizer">Organizer</option>
+                                <option value="Participant">Participant</option>
+                                <option value="Judge">Judge</option>
+                                <option value="Sponsor">Sponsor</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <div style="position: relative;">
+                        <input type="password" id="password" name="password" class="form-input" required>
+                        <button type="button" class="password-toggle">
+                            <i class="far fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="password-strength">
+                        <div class="password-strength-meter"></div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-register">Register</button>
+            </form>
+            
+            <div class="register-footer">
+                Already have an account? <a href="login.html">Login</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo-container">
+                <img src="logo.png" alt="Nascon Logo" class="footer-logo">
+                <span>Nascon 2025</span>
+            </div>
+            
+            <div class="footer-links">
+                <a href="index.html" class="footer-link">Home</a>
+                <a href="about.html" class="footer-link">About</a>
+                <a href="contact.html" class="footer-link">Contact</a>
+                <a href="privacy.html" class="footer-link">Privacy Policy</a>
+            </div>
+            
+            <div class="footer-copyright">
+                &copy; 2025 Nascon Event Management. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Password visibility toggle
+        document.querySelector('.password-toggle').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const icon = this.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+        
+        // Simple password strength meter
+        document.getElementById('password').addEventListener('input', function() {
+            const password = this.value;
+            const meter = document.querySelector('.password-strength-meter');
+            
+            // Remove all classes
+            meter.classList.remove('strength-weak', 'strength-medium', 'strength-strong');
+            
+            if (password.length === 0) {
+                meter.style.width = '0';
+                return;
+            }
+            
+            // Simple strength calculation
+            let strength = 0;
+            
+            // Length check
+            if (password.length > 5) strength += 1;
+            if (password.length > 8) strength += 1;
+            
+            // Character type checks
+            if (/[A-Z]/.test(password)) strength += 1;
+            if (/[0-9]/.test(password)) strength += 1;
+            if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+            
+            // Update meter
+            if (strength <= 2) {
+                meter.classList.add('strength-weak');
+            } else if (strength <= 4) {
+                meter.classList.add('strength-medium');
+            } else {
+                meter.classList.add('strength-strong');
+            }
+        });
+
+        document.getElementById('register-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const role = document.getElementById('role').value;
+            const password = document.getElementById('password').value;
+
+            // Send the data to the back-end
+            fetch('/api/users', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, email, phone, role, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('User registered:', data);
+                alert('User registered successfully!');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('There was an error registering the user!');
+            });
+        });
+    </script>
+</body>
+</html>

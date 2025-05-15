@@ -1,0 +1,199 @@
+
+:root {
+    --primary-color: #1a237e;
+    --primary-light: #303f9f; 
+    --primary-lighter: #3949ab; 
+    --primary-lightest: #7986cb;
+    --accent-color: #0d47a1;
+    --text-on-dark: #ffffff; 
+    --text-primary: #212121; 
+    --text-secondary: #616161; 
+    --bg-color: #f5f7fa; 
+    --card-bg: #ffffff; 
+    --shadow-color: rgba(0, 0, 0, 0.1); 
+    --success-color: #43a047; 
+    --border-radius: 8px; 
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --transition-speed: 0.3s;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body.team-registration-body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+.team-registration-title {
+    color: var(--primary-color);
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 30px;
+    text-align: center;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.team-registration-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color), var(--primary-lighter));
+    border-radius: 2px;
+}
+
+.team-register-form {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 30px;
+    width: 100%;
+    max-width: 500px;
+    animation: fadeIn 0.4s ease-in-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.team-register-form::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, var(--primary-color), var(--primary-lighter));
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text-primary);
+    font-size: 15px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    font-size: 15px;
+    transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+    margin-bottom: 20px;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--primary-lighter);
+    box-shadow: 0 0 0 2px rgba(26, 35, 126, 0.2);
+}
+
+.form-input[readonly] {
+    background-color: #f8f9fa;
+    cursor: not-allowed;
+}
+
+.submit-button {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+    color: var(--text-on-dark);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.submit-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(26, 35, 126, 0.2);
+}
+
+.submit-button:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 6px rgba(26, 35, 126, 0.1);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Error message styling */
+.error-message {
+    color: #e53935;
+    font-size: 14px;
+    margin-top: -15px;
+    margin-bottom: 15px;
+    display: none;
+}
+
+/* Success message styling */
+.success-message {
+    color: var(--success-color);
+    font-size: 14px;
+    padding: 10px;
+    background-color: rgba(67, 160, 71, 0.1);
+    border-radius: var(--border-radius);
+    margin-bottom: 15px;
+    text-align: center;
+    display: none;
+}
+
+/* Additional responsive styles */
+@media screen and (max-width: 600px) {
+    .team-registration-body {
+        padding: 20px 15px;
+    }
+    
+    .team-registration-title {
+        font-size: 24px;
+    }
+    
+    .team-register-form {
+        padding: 25px 20px;
+    }
+    
+    .form-input {
+        padding: 10px 12px;
+    }
+    
+    .submit-button {
+        padding: 12px;
+    }
+}
+
+/* Add back border between form elements */
+br {
+    display: none;
+}
+
+.form-label {
+    margin-top: 15px;
+}
+
+/* First label doesn't need top margin */
+.form-label:first-child {
+    margin-top: 0;
+}

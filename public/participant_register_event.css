@@ -1,0 +1,171 @@
+
+/* Event Registration Form CSS */
+:root {
+  --primary-color: #4a90e2;
+  --secondary-color: #5cb85c;
+  --text-color: #333;
+  --background-color: #f9f9f9;
+  --form-bg-color: #ffffff;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --transition-speed: 0.3s;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.register-event-body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1rem;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.register-event-body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(74, 144, 226, 0.1) 0%, rgba(92, 184, 92, 0.1) 100%);
+  z-index: -1;
+}
+
+.header-logo {
+  margin-bottom: 1.5rem;
+  width: 150px;
+  height: auto;
+}
+
+.register-event-title {
+  color: var(--primary-color);
+  font-size: 2.2rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  position: relative;
+  font-weight: 700;
+  text-shadow: 1px 1px 3px var(--shadow-color);
+}
+
+.register-event-title::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  background-color: var(--secondary-color);
+  margin: 0.5rem auto;
+  border-radius: 2px;
+}
+
+.register-form {
+  background-color: var(--form-bg-color);
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px var(--shadow-color);
+  width: 100%;
+  max-width: 500px;
+  position: relative;
+  transition: transform var(--transition-speed);
+}
+
+.register-form:hover {
+  transform: translateY(-5px);
+}
+
+.form-label {
+  font-weight: 600;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+  display: block;
+  font-size: 1rem;
+}
+
+.form-input, .form-select {
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 1.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+  background-color: #fafafa;
+}
+
+.form-input:focus, .form-select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+}
+
+.submit-button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--transition-speed), transform var(--transition-speed);
+  margin-right: 1rem;
+  box-shadow: 0 4px 6px rgba(74, 144, 226, 0.2);
+}
+
+.submit-button:hover {
+  background-color: #3a7bc8;
+  transform: translateY(-2px);
+}
+
+.submit-button:active {
+  transform: translateY(1px);
+}
+
+#teamNameButton {
+  background-color: var(--secondary-color);
+  box-shadow: 0 4px 6px rgba(92, 184, 92, 0.2);
+}
+
+#teamNameButton:hover {
+  background-color: #4cae4c;
+}
+
+@media (max-width: 600px) {
+  .register-form {
+    padding: 1.5rem;
+  }
+  
+  .register-event-title {
+    font-size: 1.8rem;
+  }
+  
+  .submit-button {
+    width: 100%;
+    margin-bottom: 1rem;
+    margin-right: 0;
+  }
+}
+
+/* Animation for form appearance */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.register-form {
+  animation: fadeIn 0.8s ease-out forwards;
+}

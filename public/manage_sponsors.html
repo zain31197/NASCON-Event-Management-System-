@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sponsor Management System</title>
+  <link rel="stylesheet" href="manage_sponsors.css">
+</head>
+<body>
+  <h1>Manage Sponsors</h1>
+  
+  <div class="container">
+    <div class="banner">
+      <h3>Sponsor Management Portal</h3>
+      <p>Efficiently manage your event sponsors in one place</p>
+    </div>
+    
+    <div class="card-header">
+      <h2>Add New Sponsor</h2>
+    </div>
+    
+    <form id="sponsorForm">
+      <input type="text" id="companyName" placeholder="Company Name" required>
+      <input type="text" id="contactPerson" placeholder="Contact Person" required>
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="text" id="phone" placeholder="Phone" required>
+      <button type="submit">Add Sponsor</button>
+    </form>
+    
+    <div class="card-header">
+      <h2>Existing Sponsors</h2>
+    </div>
+    
+    <table>
+      <thead>
+        <tr>
+          <th>Sponsor ID</th>
+          <th>Company Name</th>
+          <th>Contact Person</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="sponsorsTable"></tbody>
+    </table>
+  </div>
+
+  <script>
+    const sponsorForm = document.getElementById('sponsorForm');
+    const sponsorsTable = document.getElementById('sponsorsTable');
+    
+    async function fetchSponsors() {
+      const res = await fetch('/api/sponsorships');
+      const sponsors = await res.json();
+      sponsorsTable.innerHTML = '';
+      sponsors.forEach(sponsor => {
+        sponsorsTable.innerHTML += `
+          <tr>
+            <td>${sponsor.SponsorID}</td>
+            <td>${sponsor.CompanyName}</td>
+            <td>${sponsor.ContactPerson}</td>
+            <td>${sponsor.Email}</td>
+            <td>${sponsor.Phone}</td>
+            <td>
+              <button onclick="deleteSponsor(${sponsor.SponsorID})">Delete</button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+    
+    sponsorForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const sponsor = {
+        companyName: document.getElementById('companyName').value,
+        contactPerson: document.getElementById('contactPerson').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value
+      };
+      await fetch('/api/sponsorships', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(sponsor)
+      });
+      sponsorForm.reset();
+      fetchSponsors();
+    });
+    
+    async function deleteSponsor(id) {
+      await fetch(`/api/sponsorships/${id}`, { method: 'DELETE' });
+      fetchSponsors();
+    }
+    
+    fetchSponsors();
+  </script>
+</body>
+</html>

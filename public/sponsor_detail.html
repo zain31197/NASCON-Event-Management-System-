@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sponsor Details</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #0a1f44; /* Dark royal blue background */
+      color: white;
+    }
+
+    .container {
+      background: linear-gradient(145deg, #1a3a7a, #0d2b6e); /* Royal blue gradient */
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      width: 450px;
+    }
+
+    .logo-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .logo {
+      max-width: 150px;
+      height: auto;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #ffffff; /* Light blue accent */
+      font-weight: 600;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #a3b8e0; /* Soft blue for labels */
+    }
+
+    input {
+      padding: 12px;
+      margin-bottom: 16px;
+      border-radius: 6px;
+      border: 1px solid #3d68c5;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    input::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #4d78df;
+      box-shadow: 0 0 0 2px rgba(77, 120, 223, 0.3);
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    button {
+      padding: 14px;
+      background-color: #1e4db7; /* Royal blue button */
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: background 0.3s ease;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #2a5fda; /* Lighter blue on hover */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .error {
+      color: #ff6b6b; /* Red error text */
+      margin-top: 15px;
+      text-align: center;
+      padding: 8px;
+      border-radius: 4px;
+      background-color: rgba(255, 107, 107, 0.1);
+      font-size: 14px;
+    }
+
+    .success {
+      color: #4ade80; /* Green success text */
+      margin-top: 15px;
+      text-align: center;
+      padding: 8px;
+      border-radius: 4px;
+      background-color: rgba(74, 222, 128, 0.1);
+      font-size: 14px;
+    }
+
+    @media (max-width: 500px) {
+      .container {
+        width: 90%;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo-container">
+      <img src="logo.png" alt="Logo" class="logo">
+    </div>
+    <h2>Complete Your Sponsor Profile</h2>
+    <form id="sponsorForm">
+      <label for="companyName">Company Name:</label>
+      <input type="text" id="companyName" name="companyName" required />
+
+      <label for="contactPerson">Contact Person:</label>
+      <input type="text" id="contactPerson" name="contactPerson" required />
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required />
+
+      <label for="phone">Phone:</label>
+      <input type="text" id="phone" name="phone" required />
+
+      <button type="submit">Save Sponsor Details</button>
+    </form>
+    <div id="error-message" class="error"></div>
+    <div id="success-message" class="success"></div>
+  </div>
+
+  <script>
+    document.getElementById('sponsorForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+  
+      const companyName = document.getElementById('companyName').value.trim();
+      const contactPerson = document.getElementById('contactPerson').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+  
+      const errorMessage = document.getElementById('error-message');
+      const successMessage = document.getElementById('success-message');
+  
+      errorMessage.textContent = '';
+      successMessage.textContent = '';
+  
+      if (!email || !companyName || !contactPerson || !phone) {
+          errorMessage.textContent = 'Please complete all fields.';
+          return;
+      }
+  
+      const data = {
+          companyName,
+          contactPerson,
+          email,
+          phone
+      };
+  
+      try {
+          // Changed endpoint to match backend route
+          const response = await fetch('/sponsor-details', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(data)
+          });
+  
+          const result = await response.json();
+  
+          if (response.ok) {
+              successMessage.textContent = result.message || 'Sponsor profile saved successfully!';
+              setTimeout(() => {
+                  window.location.href = result.redirectTo;
+              }, 1500);
+          } else {
+              errorMessage.textContent = result.message || 'Failed to save sponsor profile.';
+              if (result.error) {
+                  console.error('Server error:', result.error);
+              }
+          }
+      } catch (error) {
+          console.error('Error:', error);
+          errorMessage.textContent = 'Something went wrong. Please try again.';
+      }
+  });
+  </script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Nascon 2025</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+  <!-- Header Section -->
+  <header class="header">
+    <div class="logo-container">
+      <img src="logo.png" alt="Nascon Logo" class="logo">
+      <h1 class="site-title">Nascon 2025</h1>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="login-container">
+    <div class="login-card">
+      <!-- Decorative elements -->
+      <div class="bg-circle bg-circle-1"></div>
+      <div class="bg-circle bg-circle-2"></div>
+      
+      <h1 class="login-title">Login</h1>
+      
+      <!-- Error alert (hidden by default) -->
+      <div class="error-alert">
+        <i class="fas fa-exclamation-circle"></i>
+        <span>Invalid username or password</span>
+      </div>
+      
+      <form id="loginForm">
+        <div class="form-group">
+          <input type="text" id="username" class="form-input" placeholder="Username" required>
+        </div>
+        
+        <div class="form-group">
+          <input type="password" id="password" class="form-input" placeholder="Password" required>
+          <button type="button" class="password-toggle">
+            <i class="far fa-eye"></i>
+          </button>
+        </div>
+        
+        <button type="submit" class="btn-login">Login</button>
+      </form>
+      
+      <div class="login-footer">
+        Don't have an account? <a href="register.html">Register</a>
+      </div>
+      
+      <div class="login-divider">OR</div>
+      
+      <div class="social-login">
+        <button class="social-btn">
+          <i class="fab fa-google"></i>
+        </button>
+        <button class="social-btn">
+          <i class="fab fa-facebook-f"></i>
+        </button>
+        <button class="social-btn">
+          <i class="fab fa-twitter"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Section -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-logo-container">
+        <img src="logo.png" alt="Nascon Logo" class="footer-logo">
+        <span>Nascon 2025</span>
+      </div>
+      
+      <div class="footer-links">
+        <a href="index.html" class="footer-link">Home</a>
+        <a href="about.html" class="footer-link">About</a>
+        <a href="contact.html" class="footer-link">Contact</a>
+        <a href="privacy.html" class="footer-link">Privacy Policy</a>
+      </div>
+      
+      <div class="footer-copyright">
+        &copy; 2025 Nascon Event Management. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Password visibility toggle
+    document.querySelector('.password-toggle').addEventListener('click', function() {
+      const passwordInput = document.getElementById('password');
+      const icon = this.querySelector('i');
+      
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+      } else {
+        passwordInput.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+      }
+    });
+    
+    // redirect every one according to there role
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      
+      const response = await fetch('/api/users/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        const role = data.user.role;
+        
+        if (role === 'Admin') {
+          window.location.href = '/admin_dashboard.html';
+        } else if (role === 'Organizer') {
+          window.location.href = '/organizer_dashboard.html';
+        } else if (role === 'Participant') {
+          window.location.href = '/participant_dashboard.html';
+        } else if (role === 'Judge') {
+          window.location.href = '/judge_dashboard.html';
+        } else if (role === 'Sponsor') {
+          window.location.href = '/sponsor_detail.html';
+        } else {
+          alert('Unknown role!');
+        }
+      } else {
+        alert('Invalid username or password!');
+        window.location.href = '/register.html'; // Redirect to register if login fails
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Accommodation Management</title>
+  <style>
+    :root {
+      --royal-blue: #1a237e;
+      --royal-blue-light: #3949ab;
+      --royal-blue-dark: #0d1642;
+      --accent: #ff9800;
+      --text-light: #f8f9fa;
+      --text-dark: #333;
+      --grey-light: #e9ecef;
+      --white: #ffffff;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--grey-light);
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header {
+      background-color: var(--royal-blue);
+      color: var(--text-light);
+      padding: 20px 0;
+      box-shadow: var(--shadow);
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      height: 60px;
+      margin-right: 15px;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .card {
+      background-color: var(--white);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      padding: 25px;
+      margin-bottom: 30px;
+    }
+
+    h2 {
+      color: var(--royal-blue);
+      margin-bottom: 20px;
+      font-weight: 600;
+      border-bottom: 2px solid var(--royal-blue-light);
+      padding-bottom: 10px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+      transition: border 0.3s ease;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--royal-blue);
+      box-shadow: 0 0 0 2px rgba(26, 35, 126, 0.2);
+    }
+
+    button {
+      background-color: var(--royal-blue);
+      color: var(--white);
+      border: none;
+      padding: 12px 24px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: var(--royal-blue-light);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      background: var(--white);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    th, td {
+      padding: 15px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: var(--royal-blue);
+      color: var(--text-light);
+      font-weight: 500;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f8f9fa;
+    }
+
+    tr:hover {
+      background-color: #e8eaf6;
+    }
+
+    /* Status colors */
+    .status-pending {
+      color: #ff9800;
+      font-weight: 500;
+    }
+
+    .status-approved {
+      color: #4caf50;
+      font-weight: 500;
+    }
+
+    .status-rejected {
+      color: #f44336;
+      font-weight: 500;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      table {
+        display: block;
+        overflow-x: auto;
+      }
+      
+      .form-group {
+        margin-bottom: 20px;
+      }
+      
+      input, button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <div class="logo-container">
+        <img src="logo.png" alt="Accommodation Logo" class="logo">
+        <h1>Accommodation Management System</h1>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <h2>Request Accommodation</h2>
+      <div class="form-group">
+        <label for="participantID">Participant ID:</label>
+        <input type="number" id="participantID" />
+      </div>
+      <div class="form-group">
+        <label for="numPeople">Number of People:</label>
+        <input type="number" id="numPeople" />
+      </div>
+      <div class="form-group">
+        <label for="maxBudget">Max Budget:</label>
+        <input type="number" id="maxBudget" />
+      </div>
+      <button onclick="submitRequest()">Submit Request</button>
+    </div>
+
+    <div class="card">
+      <h2>Room Allocation Report</h2>
+      <table id="allocationTable">
+        <thead>
+          <tr>
+            <th>Request ID</th>
+            <th>Participant</th>
+            <th>People</th>
+            <th>Budget</th>
+            <th>Status</th>
+            <th>Accommodation</th>
+            <th>Room</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    async function submitRequest() {
+      const participantID = document.getElementById('participantID').value;
+      const numPeople = document.getElementById('numPeople').value;
+      const maxBudget = document.getElementById('maxBudget').value;
+      
+      const res = await fetch('http://localhost:5000/api/accommodation/request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ participantID, numPeople, maxBudget })
+      });
+      
+      const data = await res.json();
+      alert(data.message);
+      loadAllocations();
+    }
+    
+    async function loadAllocations() {
+      const res = await fetch('http://localhost:5000/api/accommodation/allocations');
+      const data = await res.json();
+      
+      const tbody = document.querySelector('#allocationTable tbody');
+      tbody.innerHTML = '';
+      data.forEach(row => {
+        const tr = document.createElement('tr');
+        
+        // Add status class for styling
+        let statusClass = '';
+        if (row.Status === 'Pending') statusClass = 'status-pending';
+        else if (row.Status === 'Approved') statusClass = 'status-approved';
+        else if (row.Status === 'Rejected') statusClass = 'status-rejected';
+        
+        tr.innerHTML = `
+          <td>${row.RequestID}</td>
+          <td>${row.ParticipantName}</td>
+          <td>${row.NumPeople}</td>
+          <td>${row.MaxBudget}</td>
+          <td class="${statusClass}">${row.Status}</td>
+          <td>${row.AccommodationName || '-'}</td>
+          <td>${row.RoomAllocated || '-'}</td>
+          <td>${row.RequestDate}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+    
+    window.onload = loadAllocations;
+  </script>
+</body>
+</html>
